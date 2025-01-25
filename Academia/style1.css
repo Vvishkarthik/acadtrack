@@ -1,0 +1,27 @@
+/* Styling for the container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Bouncing image animation */
+  .bounce-image {
+    width: 200px; /* Adjust the size as needed */
+    animation: bounce 2s infinite;
+  }
+  
+  /* Bounce keyframes */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0); /* Image at normal position */
+    }
+    40% {
+      transform: translateY(-30px); /* Move up */
+    }
+    60% {
+      transform: translateY(-15px); /* Small bounce down */
+    }
+  }
+  

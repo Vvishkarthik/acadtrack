@@ -1,0 +1,97 @@
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #121212;
+    color: white;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+}
+
+h1, h2 {
+    color: white;
+}
+
+/* Topbar styles */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.topbar h1 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Tools section */
+.tools {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 100px 20px 20px 20px;
+}
+
+.tool-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tool-card:hover {
+    transform: scale(1.05);
+}
+
+.tool-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.tool-card p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.tool-card a {
+    padding: 10px 20px;
+    background-color: #3498db;
+    border-radius: 25px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.tool-card a:hover {
+    background-color: #2980b9;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .tools {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar h1 {
+        font-size: 1.5rem;
+    }
+}

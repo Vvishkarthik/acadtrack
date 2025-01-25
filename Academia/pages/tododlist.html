@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly To-Do List</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #fff;
+            --text-color: #ffffff;
+            --header-bg: linear-gradient(90deg, #ff4a22, #e63819);
+            --button-bg: #e63f19;
+            --button-hover: #bf360c;
+            --card-bg: #16213E;
+            --point-bg: #ffdbb2;
+            --footer-text: #888;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+
+        .header {
+            width: 100%;
+            padding: 1.5rem 0;
+            background: var(--header-bg);
+            color: #fff;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            padding: 2rem;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: box-shadow 0.3s;
+        }
+
+        .input-container input:focus {
+            box-shadow: 0 0 10px rgba(230, 110, 25, 0.5);
+        }
+
+        .action-button {
+            display: inline-block;
+            background: var(--button-bg);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .action-button:hover {
+            background: var(--button-hover);
+            transform: scale(1.05);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            background: var(--point-bg);
+            margin: 0.5rem 0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: slideIn 0.6s forwards;
+        }
+
+        ul li span {
+            flex: 1;
+            margin-left: 1rem;
+            text-decoration: none;
+        }
+
+        ul li.done span {
+            text-decoration: line-through;
+            color: #757575;
+        }
+
+        ul li:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        ul li:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        ul li .delete-btn {
+            background: var(--button-bg);
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        ul li .delete-btn:hover {
+            background: var(--button-hover);
+        }
+
+        ul li .checkbox {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--button-bg);
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--footer-text);
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        Weekly To-Do List for Students
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <h2>Manage Your Tasks</h2>
+            <div class="input-container">
+                <input type="text" id="task-input" placeholder="Enter your task here...">
+                <button id="add-task" class="action-button">Add Task</button>
+            </div>
+            <ul id="todo-list">
+                <!-- Tasks will appear here -->
+            </ul>
+        </div>
+    </main>
+
+   
+
+    <script>
+        const taskInput = document.getElementById("task-input");
+        const addTaskButton = document.getElementById("add-task");
+        const todoList = document.getElementById("todo-list");
+
+        // Retrieve tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        // Function to save tasks to localStorage
+        const saveTasks = () => {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        };
+
+        // Function to render tasks
+        const renderTasks = () => {
+            todoList.innerHTML = ""; // Clear the list
+            tasks.forEach((task, index) => {
+                const li = document.createElement("li");
+                li.className = task.done ? "done" : "";
+                li.innerHTML = `
+                    <input type="checkbox" class="checkbox" ${task.done ? "checked" : ""} data-index="${index}">
+                    <span>${index + 1}. ${task.text}</span>
+                    <button class="delete-btn" data-index="${index}">Delete</button>
+                `;
+                todoList.appendChild(li);
+            });
+
+            // Add event listeners for checkboxes
+            document.querySelectorAll(".checkbox").forEach((checkbox) => {
+                checkbox.addEventListener("change", (e) => {
+                    const index = e.target.getAttribute("data-index");
+                    tasks[index].done = e.target.checked;
+                    saveTasks();
+                    renderTasks();
+                });
+            });
+
+            // Add delete functionality
+            document.querySelectorAll(".delete-btn").forEach((button) => {
+                button.addEventListener("click", (e) => {
+                    const index = e.target.getAttribute("data-index");
+                    tasks.splice(index, 1);
+                    saveTasks();
+                    renderTasks();
+                });
+            });
+        };
+
+        // Add task event
+        addTaskButton.addEventListener("click", () => {
+            const taskText = taskInput.value.trim();
+            if (taskText) {
+                tasks.push({ text: taskText, done: false });
+                saveTasks();
+                renderTasks();
+                taskInput.value = ""; // Clear input
+            }
+        });
+
+        // Initial render
+        renderTasks();
+    </script>
+</body>
+</html>
